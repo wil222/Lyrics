@@ -1,0 +1,154 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+\documentclass[a4paper]{article}
+\usepackage[top=0.3cm, bottom=1.5cm, left=1cm, right=1cm]{geometry}
+\usepackage[french,english]{babel}
+\usepackage{multicol}
+\usepackage{color}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{lstautogobble}
+\lstset{
+    breaklines,
+    autogobble,
+    columns=fullflexible
+}
+\usepackage{catchfilebetweentags}
+
+\usepackage{nameref}
+\makeatletter
+\newcommand*{\currentname}{\@currentlabelname}
+\makeatother
+
+%% LANGUE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\eng}{Anglais}
+\newcommand{\fr}{Français}
+\newcommand{\unknown}{Non spécifié}
+\newcommand{\st}{Style}
+\newcommand{\lang}{Langue}
+\newcommand{\tit}{Titre}
+\newcommand{\artist}{Artiste}
+
+%% STYLE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{titlesec}
+\usepackage{fontspec}
+\usepackage{xltxtra,xunicode}
+\definecolor{headings}{HTML}{0000BB}
+\titlespacing{\section}{0pt}{0pt}{0pt}
+\titleformat{\section}{
+\center\color{headings}\fontspec[Path = Fonts/]{EternalCall}\fontsize{30pt}{50pt}\selectfont}{}{0em}{}[\hrule height 1.5pt]
+\setmainfont[Color=primary, Path= Fonts/]{DJB}
+
+%% MULTI-INDEXING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{index}
+\makeindex
+\immediate\write18{makeindex -s style.ist output.tix -o output.tid}
+\immediate\write18{makeindex -s style.ist output.arx -o output.ard}
+\immediate\write18{makeindex -s style.ist output.stx -o output.std}
+\immediate\write18{makeindex -s style.ist output.lax -o output.lad}
+\newindex{artist}{arx}{ard}{\artist}
+\newindex{title}{tix}{tid}{\tit}
+\newindex{style}{stx}{std}{\st}
+\newindex{lang}{lax}{lad}{\lang}
+
+\usepackage[hypertexnames=true]{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black,
+    pagebackref=true,
+    linktocpage=true,
+    hyperindex=true
+}
+
+%% CHORDS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage{gchords}
+%
+%\def\chordsize{1.6mm}   % distance between two frets (and two strings)
+%\font\fingerfont=cmr5  % font used for numbering fingers
+%% \font\fingerfont=cmmi5   % font used for numbering fingers
+%\font\namefont=cmr10    % font used for labeling of the chord
+%\font\fretposfont=cmr7  % font used for the fret position marker
+%% \def\dampsymbol{$\scriptstyle\times$} %  `damp this string' marker
+%\def\dampsymbol{{\tiny$\scriptstyle\times$}} %  `damp this string' marker
+%
+%\newcommand{\AsevenMaj}{\chord{t}{x,n,p2,p1,p2,n}{A7+}}
+%\newcommand{\Aseven}{\chord{t}{x,n,p2,n,p2,n}{A7}}
+%\newcommand{\A}{\chord{t}{x,n,p2,p2,p2,n}{A}}
+%\newcommand{\BmseveN}{\chord{t}{x,p2,p4,p3,p3,p2}{Bm7+}}
+%\newcommand{\BmsevenA}{\chord{t}{x,n,p4,p4,p3,n}{Bm/A}}
+%\newcommand{\Bmseven}{\chord{t}{x,p2,p4,p2,p3,p2}{Bm7}}
+%\newcommand{\Bm}{\chord{t}{x,p2,p4,p4,p3,p2}{Bm}}
+%\newcommand{\Bseven}{\chord{t}{x,f1p2,p4,f1p2,p4,f1p2,}{B7}}
+%\newcommand{\BsevenBasDs}{\chord{t}{x,x,p1,p2,n,p2}{B7/D\#}}
+%\newcommand{\CssevenLight}{\chord{t}{x,p4,p3,p4,p2,x}{C\#7}}
+%\newcommand{\DmBasB}{\chord{t}{x,p2,p3,p2,p3,x}{Dm/B}}
+%\newcommand{\DseveN}{\chord{t}{x,x,n,p2,p2,p2}{D7+}}
+%\newcommand{\Dsix}{\chord{t}{x,x,n,p2,n,p2}{D6}}
+%\newcommand{\D}{\chord{t}{x,x,n,p2,p3,p2}{D}}
+%\newcommand{\EseveNNine}{\chord{t}{n,f1p2,f1p2,p4,p3,f1p2,}{E79}}
+%\newcommand{\EseveN}{\chord{t}{n,p2,p2,p4,p3,p4}{E7}}
+%\newcommand{\EsevenFour}{\chord{t}{n,p2,p2,p4,p3,p5}{E7,11}}
+%\newcommand{\Eseven}{\chord{t}{n,p2,p2,p1,p3,n}{E7}}
+%\newcommand{\Fsmin}{\chord{t}{f1p2,p4,p4,f1p2,f1p2,f1p2,}{F\#m}}
+%\newcommand{\FsminLight}{\chord{t}{x,x,f3p4,f1p2,f1p2,f1p2,}{F\#m}}
+%\newcommand{\FsminBasSeveN}{\chord{t}{x,x,f3p3,f1p2,f1p2,f1p2,}{F\#m/E\#}}
+%\newcommand{\FsminBasSeven}{\chord{t}{x,x,f2p2,f1p2,f1p2,f1p2,}{F\#m/E}}
+%\newcommand{\FsminSeven}{\chord{t}{f1p2,p4,p4,f1p2,p5,f1p2,}{F\#7m}}
+%\newcommand{\Gsminseven}{\chord{t}{f2p4,x,f4p4,f4p4,f4p4,f4p4,}{G\#7}}
+%
+%% COMMANDS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\arti}[4][\unknown]{
+    \noindent
+    \begin{minipage}{\linewidth}
+    \section[#2 -- #3]{#2 -- #3}
+    \index[artist]{#3!#2}
+    \index[title]{#2}
+    \index[lang]{#4!#2 {\tiny #3}}
+    \index[style]{#1!#2 {\tiny #3}}}
+    
+\newcommand{\song}[1]{
+    \begin{multicols}{2}
+        \noindent
+        #1
+    \end{multicols}
+    \end{minipage}
+    \vfill}
+    
+\newcommand{\artisong}[5][\unknown]{
+    \arti[#1]{#2}{#3}{#4}
+    \song{\lstinputlisting[linerange={1-999}]{Songs/#5.txt}}}
+
+\newcommand{\artisongtxt}[5][\unknown]{
+    \arti[#1]{#2}{#3}{#4}
+    \song{\lstinputlisting[linerange={5-999}]{#5}}}
+
+%% SCRIPT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\immediate\write18{sh script.sh}
+
+%% DOCUMENT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Lyrics}
+\author{William André}
+\date{\today}
+
+\begin{document}
+
+\thispagestyle{empty}\maketitle
+\printindex
+\setcounter{page}{0}\printindex[artist]
+\setcounter{page}{0}\printindex[title]
+\setcounter{page}{0}\printindex[style]
+\setcounter{page}{0}\printindex[lang]
+\setcounter{page}{0}\thispagestyle{empty}\tableofcontents\pagebreak
+\setcounter{page}{1}
+
+
+\input{Songs/v1.list}
+\input{song.list}
+
+\end{document}

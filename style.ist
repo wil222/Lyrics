@@ -1,0 +1,12 @@
+heading_prefix "{\\bfseries\\textcolor{headings}{ "
+heading_suffix "}\\hfil}\n"
+headings_flag 1
+symhead_positive ""
+symhead_negative ""
+numhead_positive "Nombres"
+numhead_negative "nombres"
+delim_0 "}\\hspace{6pt}\\dotfill\\hspace{6pt}"
+delim_1 "\\hspace{5pt}\\dotfill\\hspace{5pt}"
+delim_2 "\\hspace{4pt}\\dotfill\\hspace{4pt}"
+item_0 "\n \\item {\\bfseries " 
+item_x1 "}\n \\normalfont\\subitem "
